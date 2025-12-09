@@ -1,7 +1,6 @@
 package practice_1;
 
 public class Owner{
-	public static void main(String[] args}{
 		private int ownerId;
 		private String name;
 		private String phone;
@@ -67,5 +66,4 @@ public class Owner{
 			+ "Owner's phone: "+getPhone()+"\n"
 			+ "Owner's number of pets: "+getNumberOfPets();
 		}
-	}
 }
