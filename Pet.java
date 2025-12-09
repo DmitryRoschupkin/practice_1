@@ -15,19 +15,53 @@ public class Pet{
 	}
 	public Pet(){
 		petId = 0;
-		name = "Bobik";
+		name = "Sharik";
 		species = "dog";
 		age = 5;
 		ownerName = "John Smith";
 	}
 	public boolean isYoung(){
-		if(species.equals("dog")){
-			if(age >= 0 && age <= 8) return true;
-			else return false;
-		}else return true; //default output for other animals,
-				// I'll write some conditions for some other species later
-
+		switch (species){
+			case "dog":
+				if(age >= 0 && age <= 8) return true;
+				else return false;
+			case "cat":
+				if(age >= 0 && age <= 7) return true;
+				else return false;
+			case "parrot":
+				if(age >= 0 && age <= 8) return true;
+				else return false;
+			case "rabbit":
+				if(age >= 0 && age <= 7) return true;
+				else return false;
+			default:
+				return false;
+		
+		}
 	}
+	public String getLifeStage(){
+		switch(species){
+			case "dog":
+				if(age < 1) return "baby";
+				else if(age <= 8) return "young";
+				else return "senior";
+			case "cat":
+				if(age < 1) return "kitten";
+				else if(age <= 7) return "young";
+				else return "senior";
+			case "parrot":
+				if(age < 1) return "baby parrot";
+				else if(age <= 8) return "young";
+				else return "senior";
+			case "rabbit":
+				if(age < 1) return "baby rabbit";
+				else if(age <= 7) return "young";
+				else return "senior";
+			default:
+				return "we can't calculate life stage for this animal((";
+		}
+	}
+	//getters
 	public int getPetId(){
 		return petId;
 	} 
@@ -43,6 +77,24 @@ public class Pet{
 	public String getOwnerName(){
 		return ownerName;
 	}
+
+	//setters
+	public void setName(String name){
+		this.name = name;
+	}
+	public void setPetId(int petId){
+		this.petId = petId;
+	}
+	public void setSpecies(String species){
+		this.species = species;
+	}
+	public void setAge(int age){
+		this.age = age;
+	}
+	public void setOwnerName(String ownerName){
+		this.ownerName = ownerName;
+	}
+	@Override
 	public String toString(){
 		return "petId: "+getPetId()+"\n" +
 		"Name: "+getName()+"\n" +
