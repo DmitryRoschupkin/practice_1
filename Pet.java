@@ -1,5 +1,4 @@
 package practice_1;
-import String;
 
 public class Pet{
 	private int petId;
@@ -22,24 +21,33 @@ public class Pet{
 		ownerName = "John Smith";
 	}
 	public boolean isYoung(){
-		if(species.isEqual("dog"){
+		if(species.equals("dog")){
 			if(age >= 0 && age <= 8) return true;
 			else return false;
-		}
+		}else return true; //default output for other animals,
+				// I'll write some conditions for some other species later
 
-	}
-	public String getLifeStage(){
-		
 	}
 	public int getPetId(){
 		return petId;
-	}	
-
+	} 
+	public String getName(){
+		return name;
+	}
+	public String getSpecies(){
+		return species;
+	}
+	public int getAge(){
+		return age;
+	}
+	public String getOwnerName(){
+		return ownerName;
+	}
 	public String toString(){
-		System.out.println("petId: "+getPetId());
-		System.out.println("Name: ");
-		System.out.println("petId: "+getPetId());
-		System.out.println("petId: "+getPetId());
-		System.out.println("petId: "+getPetId());
+		return "petId: "+getPetId()+"\n" +
+		"Name: "+getName()+"\n" +
+		"Species: "+getSpecies()+"\n" +
+		"Age: "+getAge()+"\n" +
+		"Owner's name: "+getOwnerName();
 	}
 }
