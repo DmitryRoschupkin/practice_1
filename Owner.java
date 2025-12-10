@@ -60,7 +60,7 @@ public class Owner{
 		}
 		
 		//toString
-		public Strint toString(){
+		public String toString(){
 			return "ownerId: "+getOwnerId()+"\n"
 			+ "Owner's name: "+getName()+"\n"
 			+ "Owner's phone: "+getPhone()+"\n"
