@@ -1,6 +1,6 @@
 package practice_1;
 
-class Veterinarian{
+public class Veterinarian{
     private int vetId;
     private String name;
     private String specialization;

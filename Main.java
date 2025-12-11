@@ -65,9 +65,17 @@ class Main{
 		System.out.println(veterinarian1.canTreat(parrot1));
 		System.out.println("Can "+veterinarian2.getName()+" treat "+dog1.getSpecies()+" "+dog1.getName()+"?");
 		System.out.println(veterinarian2.canTreat(dog1));
+		System.out.println("\n");
 
 		//testing Owners' methods
-		
+		System.out.println("Adding new pets to "+owner1.getName()+"\n");
+		owner1.addPets(5);
+		System.out.println("Number of "+owner1.getName()+"'s pets is "+owner1.getNumberOfPets()+"\n");
+		System.out.println("\n");
+		for(int i = 0; i < owners.size(); i++){
+			System.out.println("Is "+owners.get(i).getName()+" frequent client?");
+			System.out.println(owners.get(i).isFrequentClient());
+		}
 
 	}
 }

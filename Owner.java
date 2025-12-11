@@ -28,7 +28,7 @@ public class Owner{
 		boolean isFrequentClient(){
 			if(numberOfPets >= 3) return true;
 			else return false;
-			//in future i'll add some new super-mega-cool logic for this method, related with other classes, but now i don't want
+			//in future i'll add some new super-mega-cool logic for this method, related with other classes and looking like relations in dbms, but i don't know how to do this 
 		}
 
 		//getters
