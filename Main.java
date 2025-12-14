@@ -46,20 +46,16 @@ class Main{
 		System.out.println(parrot1.getLifeStage());
 		System.out.println("\n");
 
-		System.out.println(dog1.toString());
-		System.out.println("\n");
-
-		System.out.println(cat1.toString());
-		System.out.println("\n");
-
-		System.out.println(parrot1.toString());
-		System.out.println("\n");
+		for(Pet pet : pets){
+			System.out.println(pet.toString());
+			System.out.println("\n");
+		}
 
 		//testing Veterinarian's methods
-		for(int i = 0; i < veterinarians.size(); i++){
-			System.out.println("Is "+veterinarians.get(i).getName()+" experienced enough?");
-			System.out.println(veterinarians.get(i).isExperienced());
-		}
+        for (Veterinarian veterinarian : veterinarians) {
+            System.out.println("Is " + veterinarian.getName() + " experienced enough?");
+            System.out.println(veterinarian.isExperienced());
+        }
 		System.out.println("\n");
 		System.out.println("Can "+veterinarian1.getName()+" treat "+parrot1.getSpecies()+" "+parrot1.getName()+"?");
 		System.out.println(veterinarian1.canTreat(parrot1));
@@ -68,14 +64,18 @@ class Main{
 		System.out.println("\n");
 
 		//testing Owners' methods
+        for (Owner owner : owners) {
+            System.out.println(owner.toString());
+        }
+		System.out.println("\n");
 		System.out.println("Adding new pets to "+owner1.getName()+"\n");
 		owner1.addPets(5);
 		System.out.println("Number of "+owner1.getName()+"'s pets is "+owner1.getNumberOfPets()+"\n");
 		System.out.println("\n");
-		for(int i = 0; i < owners.size(); i++){
-			System.out.println("Is "+owners.get(i).getName()+" frequent client?");
-			System.out.println(owners.get(i).isFrequentClient());
-		}
+        for (Owner owner : owners) {
+            System.out.println("Is " + owner.getName() + " frequent client?");
+            System.out.println(owner.isFrequentClient());
+        }
 
 	}
 }
