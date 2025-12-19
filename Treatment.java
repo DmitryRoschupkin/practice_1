@@ -80,4 +80,14 @@ public class Treatment {
             this.veterinarian = veterinarian;
         }else System.out.println("Veterinarian can't be null");
     }
+
+    @Override
+    public String toString() {
+        return "ThreatmentID: "+getTreatmentID()+"\n"
+                +"Total Amount: "+getTotalAmount()+"\n"
+                +"Status: "+getStatus()+"\n"
+                +"Owner: "+getOwner()+"\n"
+                +"Pet: "+getPet()+"\n"
+                +"Veterinarian: "+getVeterinarian();
+    }
 }

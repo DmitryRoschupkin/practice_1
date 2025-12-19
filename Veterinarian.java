@@ -5,18 +5,21 @@ public class Veterinarian{
     private String name;
     private String specialization;
     private int experience;
+    private String phone;
 
-    public Veterinarian(int vetId, String name, String specialization, int experience){
+    public Veterinarian(int vetId, String name, String specialization, int experience, String phone){
         this.vetId = vetId;
         this.name = name;
         this.specialization = specialization;
         this.experience = experience;
+        this.phone = phone;
     }
     public Veterinarian(){
         this.vetId = 0;
         this.name = "Ivan Veterinarov";
         this.specialization = "dog";
         this.experience = 5;
+        this.phone = "00-00-00";
     }
 
     public boolean canTreat(Pet pet){
@@ -41,6 +44,7 @@ public class Veterinarian{
     public int getExperience(){
         return experience;
     }
+    public String getPhone(){return phone;}
     //setters
     public void setVetId(int vetId){
         if (vetId >= 0) {
@@ -65,12 +69,18 @@ public class Veterinarian{
             this.experience = experience;
         }else System.out.println("Invalid experience: cannot be negative");
     }
+    public void setPhone(String phone){
+        if (phone != null && !phone.isEmpty()) {
+            this.phone = phone;
+        }else System.out.println("Invalid phone: cannot be empty");
+    }
 
     public String toString(){
         return "vetId: "+getVetId()+"\n"
                 + "Veterinatian's name: "+getName()+"\n"
                 + "Specialization: "+getSpecialization()+"\n"
-                + "Experience: "+getExperience();
+                + "Experience: "+getExperience()+"\n"
+                + "Phone: "+getPhone();
     }
 
 

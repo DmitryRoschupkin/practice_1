@@ -30,7 +30,7 @@ public class Owner{
 		}
 		public Pet regPet(String name, String species, int age){
 			//String petName = "pet"+(pets.size()+1);
-			Pet pet = new Pet(pets.size()+1, name, species, age, this);
+			Pet pet = new Pet(name, species, age, this);
 			return pet;
 		}
 		boolean isFrequentClient(){
@@ -55,11 +55,11 @@ public class Owner{
 		// And "new" instruction in order to return copy of
 		// "pets" array to defend list of pets from outer access
 		// true incapsulation!!! imho, this move can help me when I learn DBMS
-		public int getLoyaltyPoints(){
-				return loyaltyPoints;
-		}
 		public ArrayList <Pet> getPets(){
 			return new ArrayList<>(pets);
+		}
+		public int getLoyaltyPoints(){
+			return loyaltyPoints;
 		}
 
 		//setters

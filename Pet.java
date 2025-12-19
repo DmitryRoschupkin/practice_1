@@ -2,13 +2,14 @@ package practice_1;
 
 public class Pet{
 	private int petId;
+	private static int nextId = 1;
 	private String name;
 	private String species;
 	private int age;
 	private Owner owner;
 
-	public Pet(int petId, String name, String species, int age, Owner owner){
-		this.petId = petId;
+	public Pet(String name, String species, int age, Owner owner){
+		this.petId = nextId++;
 		this.name = name;
 		this.species = species;
 		this.age = age;
@@ -111,6 +112,8 @@ public class Pet{
 		"Name: "+getName()+"\n" +
 		"Species: "+getSpecies()+"\n" +
 		"Age: "+getAge()+"\n" +
-		"Owner's name: "+getOwnerName();
+		"Owner's name: "+getOwnerName()+"\n" +
+		"Life Stage: "+getLifeStage();
+
 	}
 }
