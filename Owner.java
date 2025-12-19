@@ -1,34 +1,40 @@
 package practice_1;
 
+import java.util.ArrayList;
+
 public class Owner{
 		private int ownerId;
 		private String name;
 		private String phone;
-		private int numberOfPets;
+		private int loyaltyPoints;
+		private ArrayList<Pet> pets;
 
-		public Owner(int ownerId, String name, String phone, int numberOfPets){
+		public Owner(int ownerId, String name, String phone){
 			this.ownerId = ownerId;
 			this.name = name;
 			this.phone = phone;
-			this.numberOfPets = numberOfPets;
+			this.loyaltyPoints = 0;
+			this.pets = new ArrayList<>();
 		}
 		public Owner(){
 			ownerId = 0;
 			name = "John Smith";
 			phone = "00-00-00";
-			numberOfPets = 0;
+			//numberOfPets = 0;
+			loyaltyPoints = 0;
 		}
-
-		public void addPets(int addedNum){
-			numberOfPets += addedNum;
+		//this method is used in Pet class in order to make connection
+		//between owner and pet like in real DBMS
+		public void addPets(Pet pet){
+			pets.add(pet);
 		}
-		public void addPets(){
-			numberOfPets ++;
+		public Pet regPet(String name, String species, int age){
+			//String petName = "pet"+(pets.size()+1);
+			Pet pet = new Pet(pets.size()+1, name, species, age, this);
+			return pet;
 		}
 		boolean isFrequentClient(){
-			if(numberOfPets >= 3) return true;
-			else return false;
-			//in future i'll add some new super-mega-cool logic for this method, related with other classes and looking like relations in dbms, but i don't know how to do this 
+			return pets.size()>=3;
 		}
 
 		//getters
@@ -42,7 +48,18 @@ public class Owner{
 			return phone;
 		}
 		public int getNumberOfPets(){
-			return numberOfPets;
+			return pets.size();
+		}
+		// I decided to place pet's getter here, because pets are related with owner.
+		// I used ArrayList to get array of pets that belong to owner,
+		// And "new" instruction in order to return copy of
+		// "pets" array to defend list of pets from outer access
+		// true incapsulation!!! imho, this move can help me when I learn DBMS
+		public int getLoyaltyPoints(){
+				return loyaltyPoints;
+		}
+		public ArrayList <Pet> getPets(){
+			return new ArrayList<>(pets);
 		}
 
 		//setters
@@ -55,15 +72,14 @@ public class Owner{
 		public void setPhone(String phone){
 			this.phone = phone;
 		}
-		public void setNumberOfPets(int numberOfPets){
-			this.numberOfPets = numberOfPets;
-		}
+
 		
 		//toString
 		public String toString(){
 			return "ownerId: "+getOwnerId()+"\n"
 			+ "Owner's name: "+getName()+"\n"
 			+ "Owner's phone: "+getPhone()+"\n"
-			+ "Owner's number of pets: "+getNumberOfPets();
+			+ "Owner's number of pets: "+getNumberOfPets()+"\n"
+			+ "Owner's loyalty points: "+getLoyaltyPoints();
 		}
 }

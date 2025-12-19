@@ -5,21 +5,24 @@ public class Pet{
 	private String name;
 	private String species;
 	private int age;
-	private String ownerName;
-	public Pet(int petId, String name, String species, int age, String ownerName){
+	private Owner owner;
+
+	public Pet(int petId, String name, String species, int age, Owner owner){
 		this.petId = petId;
 		this.name = name;
 		this.species = species;
 		this.age = age;
-		this.ownerName = ownerName;
+		this.owner = owner;
+		owner.addPets(this);
 	}
 	public Pet(){
 		petId = 0;
 		name = "Sharik";
 		species = "dog";
 		age = 5;
-		ownerName = "John Smith";
+		//ownerName = "John Smith";
 	}
+
 	public boolean isYoung(){
 		switch (species){
 			case "dog":
@@ -75,7 +78,9 @@ public class Pet{
 		return age;
 	}
 	public String getOwnerName(){
-		return ownerName;
+		return owner != null ? owner.getName() : "no owner or incorrect owner's name";
+		//i used ternary operator for validation and connected pets with owners, so
+		//owner is not just text, it's real object like in databases
 	}
 
 	//setters
@@ -91,9 +96,9 @@ public class Pet{
 	public void setAge(int age){
 		this.age = age;
 	}
-	public void setOwnerName(String ownerName){
-		this.ownerName = ownerName;
-	}
+//	public void setOwnerName(String ownerName){
+//		this.owner.name = ownerName;
+//	}
 	@Override
 	public String toString(){
 		return "petId: "+getPetId()+"\n" +
