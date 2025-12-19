@@ -77,6 +77,23 @@ public class Owner{
                 this.phone = phone;
             }else System.out.println("Invalid phone: cannot be empty");
         }
+		public void setLoyaltyPoints(int loyaltyPoints){
+			if (loyaltyPoints >= 0)this.loyaltyPoints = loyaltyPoints;
+			else System.out.println("Invalid loyaltyPoints: cannot be negative");
+		}
+		public void addLoyaltyPoints(int loyaltyPoints){
+            if (loyaltyPoints >= 0){
+                this.loyaltyPoints += loyaltyPoints;
+            }else System.out.println("Invalid loyaltyPoints: cannot be negative. Maybe you mean subLoyaltyPoints()?");
+        }
+		public void subLoyaltyPoints(int loyaltyPoints){
+			if (loyaltyPoints >= 0){
+				this.loyaltyPoints -= loyaltyPoints;
+			}else System.out.println("Invalid loyaltyPoints: cannot be negative.  Maybe you mean addLoyaltyPoints()?");
+		}
+		public boolean isVIP(){
+			return this.loyaltyPoints >= 100;
+		}
 
 		
 		//toString
