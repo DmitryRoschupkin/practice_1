@@ -85,20 +85,26 @@ public class Pet{
 
 	//setters
 	public void setName(String name){
-		this.name = name;
-	}
+        if (name != null && !name.isEmpty()) {
+            this.name = name;
+        }else System.out.println("Invalid name: cannot be empty");
+    }
 	public void setPetId(int petId){
-		this.petId = petId;
-	}
+        if (petId >= 0) {
+            this.petId = petId;
+        }else System.out.println("Invalid petId: cannot be negative");
+    }
 	public void setSpecies(String species){
-		this.species = species;
-	}
+        if (species != null && !species.isEmpty()) {
+            this.species = species;
+        }else System.out.println("Invalid species: cannot be empty");
+    }
 	public void setAge(int age){
-		this.age = age;
-	}
-//	public void setOwnerName(String ownerName){
-//		this.owner.name = ownerName;
-//	}
+        if (age >= 0) {
+            this.age = age;
+        }else System.out.println("Invalid age: cannot be negative");
+    }
+
 	@Override
 	public String toString(){
 		return "petId: "+getPetId()+"\n" +

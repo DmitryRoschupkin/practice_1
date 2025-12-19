@@ -43,16 +43,27 @@ public class Veterinarian{
     }
     //setters
     public void setVetId(int vetId){
-        this.vetId = vetId;
+        if (vetId >= 0) {
+            this.vetId = vetId;
+        }else System.out.println("Invalid vetId: cannot be negative");
     }
     public void setName(String name){
-        this.name = name;
+        if (name != null && !name.isEmpty()) {
+            this.name = name;
+        }else System.out.println("Invalid name: cannot be empty");
     }
     public void setSpecialization(String specialization){
-        this.specialization = specialization;
+        if (specialization != null && !specialization.isEmpty()) {
+            this.specialization = specialization;
+        }else System.out.println("Invalid specialization: cannot be empty");
     }
     public void setExperience(int experience){
-        this.experience = experience;
+        if (experience >= 0) {
+            this.experience = experience;
+        }else if (experience >=100) {
+            System.out.println("I don't believe that it is not joke, but anyway I'll accept it))");
+            this.experience = experience;
+        }else System.out.println("Invalid experience: cannot be negative");
     }
 
     public String toString(){

@@ -64,14 +64,19 @@ public class Owner{
 
 		//setters
 		public void setOwnerId(int ownerId){
-			this.ownerId = ownerId;
+			if(ownerId >= 0)this.ownerId = ownerId;
+			else System.out.println("Invalid ownerId: cannot be negative");
 		}
 		public void setName(String name){
-			this.name = name ;
-		}
+            if (name != null && !name.isEmpty()) {
+                this.name = name ;
+            }else System.out.println("Invalid name: cannot be empty");
+        }
 		public void setPhone(String phone){
-			this.phone = phone;
-		}
+            if (phone != null && !phone.isEmpty()) {
+                this.phone = phone;
+            }else System.out.println("Invalid phone: cannot be empty");
+        }
 
 		
 		//toString
