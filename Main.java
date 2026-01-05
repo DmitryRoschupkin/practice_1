@@ -21,6 +21,7 @@ class Main{
 		System.out.println("6. View Veterinarians");
 		System.out.println("7. Add Treatments");
 		System.out.println("8. View Treatments");
+		System.out.println("9. Polymorphism demo");
 		System.out.println("0. Exit");
 		System.out.println("\n=====================================");
 		System.out.println("Enter your choice:\n");
@@ -97,6 +98,10 @@ class Main{
 		System.out.println("Enter Treatment's status: \n");
 		System.out.print(">>> ");
 		String status = s.nextLine();
+		System.out.println("Enter Treatment's type: \n");
+		System.out.print(">>> ");
+		String type = s.nextLine();
+
 		Owner owner = null;
 		Veterinarian veterinarian = null;
 		Pet pet = null;
@@ -130,12 +135,46 @@ class Main{
 			System.out.println("Pet not found!");
 		}
 
-		Treatment treatment = new Treatment(treatments.size()+1, owner, pet, veterinarian);
+		//Treatment treatment = new Treatment(treatments.size()+1, owner, pet, veterinarian, status);
+		Treatment treatment;
+		if(type.equalsIgnoreCase("Vaccination")){
+			System.out.println("Enter Vaccine name: \n");
+			System.out.print(">>> ");
+			String vaccineName = s.nextLine();
+			treatment = new Vaccination(treatments.size()+1, owner, pet, veterinarian, status,  vaccineName);
+		}else if(type.equalsIgnoreCase("Surgery")){
+			System.out.println("Enter Surgery duration in hours: \n");
+			System.out.print(">>> ");
+			int duration = s.nextInt();
+			s.nextLine();
+			treatment = new Surgery(treatments.size()+1, owner, pet, veterinarian, status,  duration);
+		}else{
+			treatment = new Treatment(treatments.size()+1, owner, pet, veterinarian, status);
+			return;
+		}
 		treatments.add(treatment);
 		System.out.println("New Treatment created successfully!");
 	}
-
-
+	private static void viewTreatments(){
+		System.out.println("===== TREATMENT LIST =====");
+		for(Treatment t : treatments){
+			System.out.println("==============");
+			if(t instanceof Vaccination){
+				Vaccination vaccination = (Vaccination)t;
+				System.out.println("Vaccine: "+vaccination.getVaccineName());
+			}
+			if(t instanceof Surgery){
+				Surgery surgery = (Surgery)t;
+				System.out.println("Difficulcy: "+surgery.getDifficulcy());
+			}
+			System.out.println("===============");
+		}
+	}
+	public static void demonstratePolymorphism(){
+		for(Treatment t : treatments){
+			t.completeTreatment();
+		}
+	}
 	public static void main(String[] args){
 		Owner owner1 = new Owner(1, "Dmitriy Rochshupkin", "03-03-03");
 		Owner owner2 = new Owner(2, "Manas Agatayev", "10-10-10");
@@ -160,6 +199,13 @@ class Main{
 		veterinarians.add(veterinarian3);
 		veterinarians.add(veterinarian4);
 		veterinarians.add(veterinarian5);
+
+		Treatment treatment1 = new Treatment(1, owner1, dog1, veterinarian1, "Started");
+		Treatment treatment2 = new Vaccination(2, owner2, cat1, veterinarian2, "Completed", "superVaccine");
+		Treatment treatment3 = new Surgery(3, owner3, parrot1, veterinarian1, "Started", 3);
+		treatments.add(treatment1);
+		treatments.add(treatment2);
+		treatments.add(treatment3);
 
 		boolean running = true;
 		while(running){
@@ -200,10 +246,10 @@ class Main{
 					createTreatments();
 					break;
 				case 8:
-					for(Treatment t: treatments){
-						System.out.println(t.toString());
-						System.out.println("\n");
-					}
+					viewTreatments();
+					break;
+				case 9:
+					demonstratePolymorphism();
 					break;
 				case 0:
 					System.out.println("It was trial mode, to use this program again");

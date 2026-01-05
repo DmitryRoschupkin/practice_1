@@ -1,32 +1,47 @@
 package practice_1;
 
 public class Treatment {
-    private int TreatmentID = 0;
-    private double totalAmount;
-    private String status;
-    Owner owner;
-    Pet pet;
-    Veterinarian veterinarian;
-    Treatment(int TreatmentID, Owner owner, Pet pet, Veterinarian veterinarian){
+    protected int TreatmentID = 0;
+    protected double totalAmount;
+    protected String status;
+    protected String treatmentType;
+    protected Owner owner;
+    protected Pet pet;
+    protected Veterinarian veterinarian;
+    Treatment(int TreatmentID, Owner owner, Pet pet, Veterinarian veterinarian, String status){
         this.TreatmentID = TreatmentID;
         this.owner = owner;
         this.pet = pet;
         this.veterinarian = veterinarian;
+        this.status = status;
     }
     public void completeTreatment(){
+        System.out.println("General treatment for "+pet.getName());
         status = "Completed";
     }
     public boolean isComplete(){
-        return status == "Completed";
+        return status.equals("Completed");
     }
-    public double calculateAmount(){
-            if(pet.getSpecies() == "dog") totalAmount = 500;
-            else if(pet.getSpecies() == "cat") totalAmount = 700;
-            else if(pet.getSpecies() == "parrot") totalAmount = 300;
-            else if(pet.getSpecies() == "rabbit") totalAmount = 750;
-            else totalAmount = -1;
-            if(owner.isVIP()) return  totalAmount/2;
-            else return totalAmount;
+    public double calculateAmount() {
+        switch (pet.getSpecies()) {
+            case "dog":
+                totalAmount = 500;
+                break;
+            case "cat":
+                totalAmount = 700;
+                break;
+            case "parrot":
+                totalAmount = 300;
+                break;
+            case "rabbit":
+                totalAmount = 750;
+                break;
+            default:
+                totalAmount = -1;
+                break;
+        }
+        if (owner.isVIP()) return totalAmount / 2;
+        else return totalAmount;
     }
 
     //getters
@@ -34,7 +49,7 @@ public class Treatment {
         return TreatmentID;
     }
     public double getTotalAmount(){
-        return totalAmount;
+        return calculateAmount();
     }
     public String getStatus(){
         return status;
@@ -47,6 +62,9 @@ public class Treatment {
     }
     public Veterinarian getVeterinarian(){
         return veterinarian;
+    }
+    public String getTreatmentType(){
+        return "General treatment";
     }
 
     //setters
@@ -61,7 +79,7 @@ public class Treatment {
         }else System.out.println("Total amount can't be negative");
     }
     public void setStatus(String status){
-        if(status.equals("Completed") ||  status.equals("Pended") && status != null && !status.isEmpty()) {
+        if(status.equals("Completed") || status.equals("Pended")) {
             this.status = status;
         }else System.out.println("Invalid status");
     }
@@ -80,6 +98,11 @@ public class Treatment {
             this.veterinarian = veterinarian;
         }else System.out.println("Veterinarian can't be null");
     }
+    public void setTreatmentType(String treatmentType){
+        if(treatmentType != null){
+            this.treatmentType = treatmentType;
+        }
+    }
 
     @Override
     public String toString() {
@@ -88,6 +111,7 @@ public class Treatment {
                 +"Status: "+getStatus()+"\n"
                 +"Owner: "+getOwner()+"\n"
                 +"Pet: "+getPet()+"\n"
-                +"Veterinarian: "+getVeterinarian();
+                +"Veterinarian: "+getVeterinarian()+"\n"
+                +"TreatmentType: "+getTreatmentType();
     }
 }
