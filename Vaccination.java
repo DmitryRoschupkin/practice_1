@@ -21,7 +21,7 @@ public class Vaccination extends Treatment{
         return vaccineName;
     }
     public String getTreatmentType() {
-        return treatmentType;
+        return "Vaccination";
     }
 
     public void setVaccineName(String vaccineName) {

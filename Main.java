@@ -158,7 +158,7 @@ class Main{
 	private static void viewTreatments(){
 		System.out.println("===== TREATMENT LIST =====");
 		for(Treatment t : treatments){
-			System.out.println("==============");
+			//System.out.println("==============");
 			if(t instanceof Vaccination){
 				Vaccination vaccination = (Vaccination)t;
 				System.out.println("Vaccine: "+vaccination.getVaccineName());
@@ -167,7 +167,10 @@ class Main{
 				Surgery surgery = (Surgery)t;
 				System.out.println("Difficulcy: "+surgery.getDifficulcy());
 			}
-			System.out.println("===============");
+			if(t instanceof Treatment){
+				System.out.println(t);
+			}
+			System.out.println("\n");
 		}
 	}
 	public static void demonstratePolymorphism(){
