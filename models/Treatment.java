@@ -1,6 +1,6 @@
-package practice_1;
+package practice_1.models;
 
-public class Treatment {
+public abstract class Treatment {
     protected int TreatmentID = 0;
     protected double totalAmount;
     protected String status;
@@ -8,20 +8,20 @@ public class Treatment {
     protected Owner owner;
     protected Pet pet;
     protected Veterinarian veterinarian;
-    Treatment(int TreatmentID, Owner owner, Pet pet, Veterinarian veterinarian, String status){
+    public Treatment(int TreatmentID, Owner owner, Pet pet, Veterinarian veterinarian, String status){
         this.TreatmentID = TreatmentID;
         this.owner = owner;
         this.pet = pet;
         this.veterinarian = veterinarian;
         this.status = status;
     }
-    public void completeTreatment(){
-        System.out.println("General treatment for "+pet.getName());
-        status = "Completed";
-    }
+
+    public abstract void completeTreatment();
+
     public boolean isComplete(){
         return status.equals("Completed");
     }
+
     public double calculateAmount() {
         switch (pet.getSpecies()) {
             case "dog":

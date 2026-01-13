@@ -1,4 +1,4 @@
-package practice_1;
+package practice_1.models;
 
 public class Pet{
 	private int petId;

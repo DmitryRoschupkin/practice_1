@@ -1,8 +1,8 @@
-package practice_1;
+package practice_1.models;
 
 public class Vaccination extends Treatment{
     private String vaccineName;
-    Vaccination(int TreatmentID, Owner owner, Pet pet, Veterinarian veterinarian, String status, String vaccineName) {
+    public Vaccination(int TreatmentID, Owner owner, Pet pet, Veterinarian veterinarian, String status, String vaccineName) {
         super(TreatmentID, owner, pet, veterinarian, status);
         this.vaccineName = vaccineName;
     }

@@ -1,4 +1,4 @@
-package practice_1;
+package practice_1.models;
 
 public class Surgery extends Treatment {
     private int duration;
@@ -22,12 +22,16 @@ public class Surgery extends Treatment {
         this.duration = duration;
         defineDifficulcy();
     }
+
+    //implemented method
     @Override
     public void completeTreatment() {
         if(duration == 1) System.out.println("Surgery on "+pet.getName() +" has been completed in "+duration+" hour");
         else System.out.println("Surgery on "+pet.getName() +" has been completed in "+duration+" hours");
         status = "Completed";
     }
+
+
     @Override
     public double calculateAmount(){
         switch(difficulcy) {
