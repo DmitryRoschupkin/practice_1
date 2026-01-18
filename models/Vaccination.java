@@ -4,7 +4,7 @@ public class Vaccination extends Treatment{
     private String vaccineName;
     public Vaccination(int TreatmentID, Owner owner, Pet pet, Veterinarian veterinarian, String status, String vaccineName) {
         super(TreatmentID, owner, pet, veterinarian, status);
-        this.vaccineName = vaccineName;
+        setVaccineName(vaccineName);
     }
     @Override
     public void completeTreatment(){
@@ -25,7 +25,9 @@ public class Vaccination extends Treatment{
     }
 
     public void setVaccineName(String vaccineName) {
-        if(vaccineName != null){
+        if(vaccineName == null){
+            throw new IllegalArgumentException("Vaccine name cannot be null");
+        }else {
             this.vaccineName = vaccineName;
         }
     }

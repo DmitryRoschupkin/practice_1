@@ -1,5 +1,7 @@
 package practice_1.models;
 
+import practice_1.exceptions.IncorrectTreatmentException;
+
 public abstract class Treatment {
     protected int TreatmentID = 0;
     protected double totalAmount;
@@ -9,11 +11,11 @@ public abstract class Treatment {
     protected Pet pet;
     protected Veterinarian veterinarian;
     public Treatment(int TreatmentID, Owner owner, Pet pet, Veterinarian veterinarian, String status){
-        this.TreatmentID = TreatmentID;
-        this.owner = owner;
-        this.pet = pet;
-        this.veterinarian = veterinarian;
-        this.status = status;
+        setTreatmentID(TreatmentID);
+        setOwner(owner);
+        setPet(pet);
+        setVeterinarian(veterinarian);
+        setStatus(status);
     }
 
     public abstract void completeTreatment();
@@ -71,37 +73,40 @@ public abstract class Treatment {
     public void setTreatmentID(int treatmentID){
         if(treatmentID >= 0){
             this.TreatmentID = treatmentID;
-        }else System.out.println("TreatmentID can't be negative");
+        }else throw new IllegalArgumentException("Treatment ID cannot be negative");
     }
     public void setTotalAmount(double totalAmount){
         if(totalAmount >= 0){
             this.totalAmount = totalAmount;
-        }else System.out.println("Total amount can't be negative");
+        }else throw new IllegalArgumentException("Total amount cannot be negative");
     }
     public void setStatus(String status){
-        if(status.equals("Completed") || status.equals("Pended")) {
+        if(status.equals("Completed") || status.equals("Failed") ||  status.equals("Cancelled") || status.equals("Ongoing")){
             this.status = status;
-        }else System.out.println("Invalid status");
+        }else throw new IncorrectTreatmentException("Invalid status");
     }
     public void setOwner(Owner owner){
         if(owner != null){
             this.owner = owner;
-        }else System.out.println("Owner can't be null");
+        }throw new IllegalArgumentException("Owner cannot be null");
     }
     public void setPet(Pet pet){
         if(pet != null){
             this.pet = pet;
-        }else System.out.println("Pet can't be null");
+        }else throw new IllegalArgumentException("Pet cannot be null");
     }
     public void setVeterinarian(Veterinarian veterinarian){
         if(veterinarian != null){
             this.veterinarian = veterinarian;
-        }else System.out.println("Veterinarian can't be null");
+        }else throw new IllegalArgumentException("Veterinarian cannot be null");
     }
     public void setTreatmentType(String treatmentType){
         if(treatmentType != null){
             this.treatmentType = treatmentType;
-        }
+        }else throw new IllegalArgumentException("Treatment type cannot be null");
+        if(treatmentType.equals("Vaccination") || treatmentType.equals("Surgery")){
+            this.treatmentType = treatmentType;
+        }else throw new IncorrectTreatmentException("Invalid treatment type");
     }
 
     @Override

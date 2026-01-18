@@ -13,6 +13,9 @@ public class MenuManager implements Menu {
 
     private static Scanner s = new Scanner(System.in);
 
+
+    //validation methods
+
     public static boolean isValid(String input){
         return !input.isEmpty();
     }
@@ -20,6 +23,45 @@ public class MenuManager implements Menu {
     public static boolean isValid(int input){
         return input > 0;
     }
+
+    private static String readSafeString(String message) {
+        while (true){
+            try{
+                System.out.println(message);
+                System.out.print(">>> ");
+                String input = s.nextLine();
+
+                if(input.isEmpty()){
+                    throw new IllegalArgumentException("Input can't be empty!");
+                }
+
+                return input;
+            }catch(IllegalArgumentException e){
+                System.out.println("Error! "+e.getMessage());
+                System.out.println("Try again!");
+            }
+        }
+    }
+
+    private static int readSafeInt(String message) {
+        while(true){
+            try{
+                String input = readSafeString(message);
+                int number = Integer.parseInt(input);
+
+                if(isValid(number)){
+                    throw new IllegalArgumentException(message);
+                }
+                return number;
+            }catch(NumberFormatException e){
+                System.out.println("Invalid input! Please, enter integer!");
+            }catch(IllegalArgumentException e){
+                System.out.println("Error! "+e.getMessage());
+            }
+        }
+    }
+
+    //other methods
 
     public static void displayMenu() {
         System.out.println("\n=====================================");
@@ -41,169 +83,95 @@ public class MenuManager implements Menu {
     }
 
     private static void createOwner() {
-        try {
-            System.out.println("Enter Owner's name: \n");
-            System.out.print(">>> ");
-            String name = s.nextLine();
-            while(!isValid(name)){
-                System.out.print(">>> ");
-                name = s.nextLine();
-            }
-            System.out.println("Enter Owner's phone number: \n");
-            System.out.print(">>> ");
-            String phone = s.nextLine();
-            while(!isValid(phone)){
-                System.out.print(">>> ");
-                phone = s.nextLine();
-            }
-            Owner owner = new Owner(owners.size() + 1, name, phone);
-            owners.add(owner);
-            System.out.println("New Owner created successfully!");
-        } catch (IllegalArgumentException e) {
-            System.out.println("Error! Invalid input! "+e.getMessage());
-        }
+        String name = readSafeString("Enter Owner's name: ");
+        String phone = readSafeString("Enter Owner's phone number: ");
+        Owner owner = new Owner(owners.size() + 1, name, phone);
+        owners.add(owner);
+        System.out.println("New Owner created successfully!");
     }
     private static void createPets(){
-        try {
-            System.out.println("Enter Pet's name: \n");
-            System.out.print(">>> ");
-            String name = s.nextLine();
-            while(!isValid(name)){
-                System.out.print(">>> ");
-                name = s.nextLine();
+        String name = readSafeString("Enter Pet's name: ");
+        String species = readSafeString("Enter Pet's species: ");
+        int age = readSafeInt("Enter Pet's age: ");
+        String ownerName = readSafeString("Enter Owner's name: ");
+        Owner owner = null; // we have to find owner
+        for(Owner o : owners){
+            if(o.getName().equalsIgnoreCase(ownerName)){
+                owner = o;
+                break;
             }
-            System.out.println("Enter Pet's species: \n");
-            System.out.print(">>> ");
-            String species = s.nextLine();
-            while(!isValid(species)){
-                System.out.print(">>> ");
-                species = s.nextLine();
-            }
-            System.out.println("Enter Pet's age: \n");
-            System.out.print(">>> ");
-            int age = s.nextInt();
-            s.nextLine();
-            while(!isValid(age)){
-                System.out.print(">>> ");
-                age = s.nextInt();
-                s.nextLine();
-            }
-            System.out.println("Enter Pet's owner: \n");
-            System.out.print(">>> ");
-            String ownerName = s.nextLine();
-            while(!isValid(ownerName)){
-                System.out.print(">>> ");
-                ownerName = s.nextLine();
-            }
-            Owner owner = null; // we have to find owner
-            for(Owner o : owners){
-                if(o.getName().equalsIgnoreCase(ownerName)){
-                    owner = o;
-                    break;
-                }
-            }
-            if(owner == null){
-                System.out.println("Owner not found!");
-                return;
-            }
-            Pet pet = new Pet(name, species, age, owner);
-            System.out.println("New Pet with ID "+pet.getPetId()+" created successfully!");
-        } catch (IllegalArgumentException e) {
-            System.out.println("Error! Invalid input! "+e.getMessage());
         }
+        if(owner == null){
+            System.out.println("Owner not found!");
+            return;
+        }
+        Pet pet = new Pet(name, species, age, owner);
+        System.out.println("New Pet with ID "+pet.getPetId()+" created successfully!");
     }
     private static void createVeterinarians(){
-        try {
-            System.out.println("Enter Veterinarian's name: \n");
-            System.out.print(">>> ");
-            String name = s.nextLine();
-            System.out.println("Enter Veterinarian's specialization: \n");
-            System.out.print(">>> ");
-            String specialization = s.nextLine();
-            System.out.println("Enter Veterinarian's experience: \n");
-            System.out.print(">>> ");
-            int experience = s.nextInt();
-            s.nextLine();
-            System.out.println("Enter Veterinarian's phone number: \n");
-            System.out.print(">>> ");
-            String phone = s.nextLine();
-            Veterinarian veterinarian = new Veterinarian(veterinarians.size() + 1, name, specialization, experience, phone);
-            veterinarians.add(veterinarian);
-            System.out.println("New Veterinarian created successfully!");
-        }catch(IllegalArgumentException e){
-                System.out.println("Error! "+e.getMessage());
-        }
+        String name = readSafeString("Enter Veterinarian's name: ");
+        String specialization = readSafeString("Enter Veterinarian's specialization: ");
+        int experience = readSafeInt("Enter Veterinarian's experience: ");
+        String phone = readSafeString("Enter Veterinarian's phone: ");
+        Veterinarian veterinarian = new Veterinarian(veterinarians.size() + 1, name, specialization, experience, phone);
+        veterinarians.add(veterinarian);
+        System.out.println("New Veterinarian created successfully!");
     }
     private static void createTreatments(){
-        try {
-            System.out.println("Enter Treatment's owner's name: \n");
-            System.out.print(">>> ");
-            String ownerName = s.nextLine();
-            System.out.println("Enter Treatment's veterinar: \n");
-            System.out.print(">>> ");
-            String veterinarianName = s.nextLine();
-            System.out.println("Enter Treatment's pet's name: \n");
-            System.out.print(">>> ");
-            String petName = s.nextLine();
-            System.out.println("Enter Treatment's status: \n");
-            System.out.print(">>> ");
-            String status = s.nextLine();
-            System.out.println("Enter Treatment's type: \n");
-            System.out.print(">>> ");
-            String type = s.nextLine();
-            Owner owner = null;
-            Veterinarian veterinarian = null;
-            Pet pet = null;
-
-            for(Owner o : owners){
-                if(o.getName().equalsIgnoreCase(ownerName)){
-                    owner = o;
-                    break;
-                }
+        String ownerName = readSafeString("Enter Owner's name: ");
+        String veterinarianName = readSafeString("Enter Veterinarian's name: ");
+        String petName = readSafeString("Enter Pet's name: ");
+        String status = readSafeString("Enter Pet's status: ");
+        String type = readSafeString("Enter Pet's type: ");
+        Owner owner = null;
+        Veterinarian veterinarian = null;
+        Pet pet = null;
+        for(Owner o : owners){
+            if(o.getName().equalsIgnoreCase(ownerName)){
+                owner = o;
+                break;
             }
-            if(owner == null){
-                System.out.println("Owner not found!");
-                return;
-            }
-            for(Veterinarian v : veterinarians){
-                if(v.getName().equalsIgnoreCase(veterinarianName)){
-                    veterinarian = v;
-                    break;
-                }
-            }
-            if(veterinarian == null){
-                System.out.println("Veterinarian not found!");
-            }
-            for(Pet p : owner.getPets()){
-                if(p.getName().equalsIgnoreCase(petName)){
-                    pet = p;
-                    break;
-                }
-            }
-            if(pet == null){
-                System.out.println("Pet not found!");
-            }
-            Treatment treatment;
-            if(type.equalsIgnoreCase("Vaccination")){
-                System.out.println("Enter Vaccine name: \n");
-                System.out.print(">>> ");
-                String vaccineName = s.nextLine();
-                treatment = new Vaccination(treatments.size()+1, owner, pet, veterinarian, status,  vaccineName);
-            }else if(type.equalsIgnoreCase("Surgery")){
-                System.out.println("Enter Surgery duration in hours: \n");
-                System.out.print(">>> ");
-                int duration = s.nextInt();
-                s.nextLine();
-                treatment = new Surgery(treatments.size()+1, owner, pet, veterinarian, status,  duration);
-            }else{
-                System.out.println("Invalid input! You haven't written the type of a treatment!");
-                return;
-            }
-            treatments.add(treatment);
-            System.out.println("New Treatment created successfully!");
-        } catch (IllegalArgumentException e) {
-            System.out.println("Error! "+e.getMessage());
         }
+        if(owner == null){
+            System.out.println("Owner not found!");
+            return;
+        }
+        for(Veterinarian v : veterinarians){
+            if(v.getName().equalsIgnoreCase(veterinarianName)){
+                veterinarian = v;
+                break;
+            }
+        }
+        if(veterinarian == null){
+            System.out.println("Veterinarian not found!");
+        }
+        for(Pet p : owner.getPets()){
+            if(p.getName().equalsIgnoreCase(petName)){
+                pet = p;
+                break;
+            }
+        }
+        if(pet == null){
+            System.out.println("Pet not found!");
+        }
+        Treatment treatment;
+        if(type.equalsIgnoreCase("Vaccination")){
+            System.out.println("Enter Vaccine name: \n");
+            System.out.print(">>> ");
+            String vaccineName = s.nextLine();
+            treatment = new Vaccination(treatments.size()+1, owner, pet, veterinarian, status,  vaccineName);
+        }else if(type.equalsIgnoreCase("Surgery")){
+            System.out.println("Enter Surgery duration in hours: \n");
+            System.out.print(">>> ");
+            int duration = s.nextInt();
+            s.nextLine();
+            treatment = new Surgery(treatments.size()+1, owner, pet, veterinarian, status,  duration);
+        }else{
+            System.out.println("Invalid input! You haven't written the type of a treatment!");
+            return;
+        }
+        treatments.add(treatment);
+        System.out.println("New Treatment created successfully!");
     }
     private static void viewTreatments(){
         System.out.println("===== TREATMENT LIST =====");
