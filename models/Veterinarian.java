@@ -14,13 +14,6 @@ public class Veterinarian{
         setExperience(experience);
         setPhone(phone);
     }
-    public Veterinarian(){
-        this.vetId = 0;
-        this.name = "Ivan Veterinarov";
-        this.specialization = "dog";
-        this.experience = 5;
-        this.phone = "00-00-00";
-    }
 
     public boolean canTreat(Pet pet){
         if(specialization.equals(pet.getSpecies()))return true;

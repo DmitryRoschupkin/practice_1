@@ -26,20 +26,14 @@ public class MenuManager implements Menu {
 
     private static String readSafeString(String message) {
         while (true){
-            try{
-                System.out.println(message);
-                System.out.print(">>> ");
-                String input = s.nextLine();
-
-                if(input.isEmpty()){
-                    throw new IllegalArgumentException("Input can't be empty!");
-                }
-
-                return input;
-            }catch(IllegalArgumentException e){
-                System.out.println("Error! "+e.getMessage());
-                System.out.println("Try again!");
+            System.out.println(message);
+            System.out.print(">>> ");
+            String input = s.nextLine();
+            if(input.isEmpty()){
+                System.out.println("Error: empty input");
+                continue;
             }
+            return input;
         }
     }
 
@@ -49,14 +43,13 @@ public class MenuManager implements Menu {
                 String input = readSafeString(message);
                 int number = Integer.parseInt(input);
 
-                if(isValid(number)){
-                    throw new IllegalArgumentException(message);
+                if(!isValid(number)){
+                    System.out.println("Error: number cannot be negative!");
+                    continue;
                 }
                 return number;
             }catch(NumberFormatException e){
                 System.out.println("Invalid input! Please, enter integer!");
-            }catch(IllegalArgumentException e){
-                System.out.println("Error! "+e.getMessage());
             }
         }
     }
@@ -121,8 +114,8 @@ public class MenuManager implements Menu {
         String ownerName = readSafeString("Enter Owner's name: ");
         String veterinarianName = readSafeString("Enter Veterinarian's name: ");
         String petName = readSafeString("Enter Pet's name: ");
-        String status = readSafeString("Enter Pet's status: ");
-        String type = readSafeString("Enter Pet's type: ");
+        String status = readSafeString("Enter treatment's status: ");
+        String type = readSafeString("Enter treatment's type: ");
         Owner owner = null;
         Veterinarian veterinarian = null;
         Pet pet = null;
@@ -160,12 +153,14 @@ public class MenuManager implements Menu {
             System.out.print(">>> ");
             String vaccineName = s.nextLine();
             treatment = new Vaccination(treatments.size()+1, owner, pet, veterinarian, status,  vaccineName);
+            owner.addLoyaltyPoints(20);
         }else if(type.equalsIgnoreCase("Surgery")){
             System.out.println("Enter Surgery duration in hours: \n");
             System.out.print(">>> ");
             int duration = s.nextInt();
             s.nextLine();
             treatment = new Surgery(treatments.size()+1, owner, pet, veterinarian, status,  duration);
+            owner.addLoyaltyPoints(25);
         }else{
             System.out.println("Invalid input! You haven't written the type of a treatment!");
             return;

@@ -81,14 +81,14 @@ public abstract class Treatment {
         }else throw new IllegalArgumentException("Total amount cannot be negative");
     }
     public void setStatus(String status){
-        if(status.equals("Completed") || status.equals("Failed") ||  status.equals("Cancelled") || status.equals("Ongoing")){
+        if(status.equalsIgnoreCase("Completed") || status.equalsIgnoreCase("Failed") ||  status.equalsIgnoreCase("Cancelled") || status.equalsIgnoreCase("Ongoing")){
             this.status = status;
         }else throw new IncorrectTreatmentException("Invalid status");
     }
     public void setOwner(Owner owner){
         if(owner != null){
             this.owner = owner;
-        }throw new IllegalArgumentException("Owner cannot be null");
+        }else throw new IllegalArgumentException("Owner cannot be null");
     }
     public void setPet(Pet pet){
         if(pet != null){

@@ -10,19 +10,13 @@ public class Owner{
 		private ArrayList<Pet> pets;
 
 		public Owner(int ownerId, String name, String phone){
-			this.ownerId = ownerId;
-			this.name = name;
-			this.phone = phone;
-			this.loyaltyPoints = 0;
+			setOwnerId(ownerId);
+			setName(name);
+			setPhone(phone);
+			setLoyaltyPoints(0);
 			this.pets = new ArrayList<>();
 		}
-		public Owner(){
-			ownerId = 0;
-			name = "John Smith";
-			phone = "00-00-00";
-			//numberOfPets = 0;
-			loyaltyPoints = 0;
-		}
+
 		//this method is used in Pet class in order to make connection
 		//between owner and pet like in real DBMS
 		public void addPets(Pet pet){
@@ -60,31 +54,31 @@ public class Owner{
 		//setters
 		public void setOwnerId(int ownerId){
 			if(ownerId >= 0)this.ownerId = ownerId;
-			else System.out.println("Invalid ownerId: cannot be negative");
+			else throw new IllegalArgumentException("Owner id cannot be negative");
 		}
 		public void setName(String name){
             if (name != null && !name.isEmpty()) {
                 this.name = name ;
-            }else System.out.println("Invalid name: cannot be empty");
+            }else throw new IllegalArgumentException("Name cannot be null or empty");
         }
 		public void setPhone(String phone){
             if (phone != null && !phone.isEmpty()) {
                 this.phone = phone;
-            }else System.out.println("Invalid phone: cannot be empty");
+            }else throw new IllegalArgumentException("Phone cannot be null or empty");
         }
 		public void setLoyaltyPoints(int loyaltyPoints){
 			if (loyaltyPoints >= 0)this.loyaltyPoints = loyaltyPoints;
-			else System.out.println("Invalid loyaltyPoints: cannot be negative");
+			else throw new IllegalArgumentException("Loyalty points cannot be negative");
 		}
 		public void addLoyaltyPoints(int loyaltyPoints){
             if (loyaltyPoints >= 0){
                 this.loyaltyPoints += loyaltyPoints;
-            }else System.out.println("Invalid loyaltyPoints: cannot be negative. Maybe you mean subLoyaltyPoints()?");
+            }else throw new IllegalArgumentException("Loyalty points cannot be negative. Maybe you mean subLoyaltyPoints?");
         }
 		public void subLoyaltyPoints(int loyaltyPoints){
 			if (loyaltyPoints >= 0){
 				this.loyaltyPoints -= loyaltyPoints;
-			}else System.out.println("Invalid loyaltyPoints: cannot be negative.  Maybe you mean addLoyaltyPoints()?");
+			}else throw new IllegalArgumentException("Loyalty points cannot be negative");
 		}
 		public boolean isVIP(){
 			return this.loyaltyPoints >= 100;
@@ -97,6 +91,7 @@ public class Owner{
 			+ "Owner's name: "+getName()+"\n"
 			+ "Owner's phone: "+getPhone()+"\n"
 			+ "Owner's number of pets: "+getNumberOfPets()+"\n"
-			+ "Owner's loyalty points: "+getLoyaltyPoints();
+			+ "Owner's loyalty points: "+getLoyaltyPoints()+"\n"
+			+ "Is Owner VIP? "+isVIP();
 		}
 }
