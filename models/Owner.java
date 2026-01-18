@@ -50,11 +50,6 @@ public class Owner{
 		public int getNumberOfPets(){
 			return pets.size();
 		}
-		// I decided to place pet's getter here, because pets are related with owner.
-		// I used ArrayList to get array of pets that belong to owner,
-		// And "new" instruction in order to return copy of
-		// "pets" array to defend list of pets from outer access
-		// true incapsulation!!! imho, this move can help me when I learn DBMS
 		public ArrayList <Pet> getPets(){
 			return new ArrayList<>(pets);
 		}

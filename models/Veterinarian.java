@@ -8,11 +8,11 @@ public class Veterinarian{
     private String phone;
 
     public Veterinarian(int vetId, String name, String specialization, int experience, String phone){
-        this.vetId = vetId;
-        this.name = name;
-        this.specialization = specialization;
-        this.experience = experience;
-        this.phone = phone;
+        setVetId(vetId);
+        setName(name);
+        setSpecialization(specialization);
+        setExperience(experience);
+        setPhone(phone);
     }
     public Veterinarian(){
         this.vetId = 0;
@@ -47,19 +47,22 @@ public class Veterinarian{
     public String getPhone(){return phone;}
     //setters
     public void setVetId(int vetId){
-        if (vetId >= 0) {
-            this.vetId = vetId;
-        }else System.out.println("Invalid vetId: cannot be negative");
+        if(vetId < 0){
+            throw new IllegalArgumentException("Vet Id cannot be negative");
+        }
+        this.vetId = vetId;
     }
     public void setName(String name){
-        if (name != null && !name.isEmpty()) {
-            this.name = name;
-        }else System.out.println("Invalid name: cannot be empty");
+        if (name == null || name.isEmpty()) {
+            throw new IllegalArgumentException("Name cannot be empty");
+        }
+        this.name = name;
     }
     public void setSpecialization(String specialization){
-        if (specialization != null && !specialization.isEmpty()) {
-            this.specialization = specialization;
-        }else System.out.println("Invalid specialization: cannot be empty");
+        if (specialization == null || specialization.isEmpty()) {
+		    throw new IllegalArgumentException("Specialization cannot be empty!");
+        }
+        this.specialization = specialization;
     }
     public void setExperience(int experience){
         if (experience >= 0) {
@@ -67,12 +70,13 @@ public class Veterinarian{
         }else if (experience >=100) {
             System.out.println("I don't believe that it is not joke, but anyway I'll accept it))");
             this.experience = experience;
-        }else System.out.println("Invalid experience: cannot be negative");
+        }else throw new IllegalArgumentException("Experience cannot be negative");
     }
     public void setPhone(String phone){
-        if (phone != null && !phone.isEmpty()) {
-            this.phone = phone;
-        }else System.out.println("Invalid phone: cannot be empty");
+        if (phone == null || phone.isEmpty()) {
+            throw new IllegalArgumentException("Phone cannot be empty");
+        }
+        this.phone = phone;
     }
 
     public String toString(){
