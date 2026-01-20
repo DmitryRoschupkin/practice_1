@@ -1,6 +1,7 @@
 package practice_1.menu;
 
-import practice_1.exceptions.IllegalArgumentException;
+import practice_1.database.OwnerDAO;
+import practice_1.database.PetDAO;
 import practice_1.models.*;
 
 import java.util.ArrayList;
@@ -81,6 +82,9 @@ public class MenuManager implements Menu {
         Owner owner = new Owner(owners.size() + 1, name, phone);
         owners.add(owner);
         System.out.println("New Owner created successfully!");
+        OwnerDAO dao = new OwnerDAO();
+        dao.insertOwner(owner);
+
     }
     private static void createPets(){
         String name = readSafeString("Enter Pet's name: ");
@@ -88,9 +92,11 @@ public class MenuManager implements Menu {
         int age = readSafeInt("Enter Pet's age: ");
         String ownerName = readSafeString("Enter Owner's name: ");
         Owner owner = null; // we have to find owner
+        int owner_id;
         for(Owner o : owners){
             if(o.getName().equalsIgnoreCase(ownerName)){
                 owner = o;
+                owner_id = o.getOwnerId();
                 break;
             }
         }
@@ -100,6 +106,8 @@ public class MenuManager implements Menu {
         }
         Pet pet = new Pet(name, species, age, owner);
         System.out.println("New Pet with ID "+pet.getPetId()+" created successfully!");
+        PetDAO dao = new PetDAO();
+        dao.insertPet(pet);
     }
     private static void createVeterinarians(){
         String name = readSafeString("Enter Veterinarian's name: ");
@@ -202,19 +210,21 @@ public class MenuManager implements Menu {
                     createOwner();
                     break;
                 case 2:
+                    OwnerDAO owner_dao = new OwnerDAO();
                     for(Owner o : owners){
-                        System.out.println(o.toString());
-                        System.out.println("\n");
+                        owner_dao.selectAllOwners(o);
                     }
                     break;
                 case 3:
                     createPets();
                     break;
                 case 4:
+                    PetDAO pet_dao = new PetDAO();
                     for(Owner o : owners){
                         for(Pet p:o.getPets()){
-                            System.out.println(p.toString());
-                            System.out.println("\n");
+//                            System.out.println(p.toString());
+//                            System.out.println("\n");
+                            pet_dao.selectAllPets(p);
                         }
                     }
                     break;

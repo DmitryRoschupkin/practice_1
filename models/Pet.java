@@ -76,7 +76,9 @@ public class Pet implements Pacient {
 	}
 	public String getOwnerName() {
 		return owner != null ? owner.getName() : "no owner or incorrect owner's name";
-
+	}
+	public Owner getOwner(){
+		return owner;
 	}
 	//setters
 	public void setName(String name){
