@@ -2,15 +2,22 @@ package practice_1.menu;
 
 import practice_1.database.OwnerDAO;
 import practice_1.database.PetDAO;
+import practice_1.database.VetDAO;
 import practice_1.models.*;
 
 import java.util.ArrayList;
 import java.util.Scanner;
 
 public class MenuManager implements Menu {
-    private static ArrayList<Owner> owners = new ArrayList<Owner>();
-    private static ArrayList<Veterinarian> veterinarians = new ArrayList<Veterinarian>();
+//    private static ArrayList<Owner> owners = new ArrayList<Owner>();
+    //private static ArrayList<Veterinarian> veterinarians = new ArrayList<Veterinarian>();
     private static ArrayList<Treatment> treatments = new ArrayList<>();
+    static OwnerDAO owner_dao = new OwnerDAO();
+    static PetDAO pet_dao = new PetDAO();
+    static VetDAO vet_dao = new VetDAO();
+    private static ArrayList<Owner> owners_fromDb = owner_dao.selectAllOwners();
+    private static ArrayList<Pet> pets_fromDb = pet_dao.selectAllPets();
+    private static ArrayList<Veterinarian> vets_fromDb = vet_dao.selectAllVets();
 
     private static Scanner s = new Scanner(System.in);
 
@@ -79,8 +86,8 @@ public class MenuManager implements Menu {
     private static void createOwner() {
         String name = readSafeString("Enter Owner's name: ");
         String phone = readSafeString("Enter Owner's phone number: ");
-        Owner owner = new Owner(owners.size() + 1, name, phone);
-        owners.add(owner);
+        Owner owner = new Owner(owners_fromDb.size() + 1, name, phone);
+        //owners.add(owner);
         System.out.println("New Owner created successfully!");
         OwnerDAO dao = new OwnerDAO();
         dao.insertOwner(owner);
@@ -92,11 +99,11 @@ public class MenuManager implements Menu {
         int age = readSafeInt("Enter Pet's age: ");
         String ownerName = readSafeString("Enter Owner's name: ");
         Owner owner = null; // we have to find owner
-        int owner_id;
-        for(Owner o : owners){
+//        OwnerDAO owner_dao = new OwnerDAO();
+//        ArrayList<Owner> owners_fromDb = owner_dao.selectAllOwners();
+        for(Owner o : owners_fromDb){
             if(o.getName().equalsIgnoreCase(ownerName)){
                 owner = o;
-                owner_id = o.getOwnerId();
                 break;
             }
         }
@@ -106,28 +113,32 @@ public class MenuManager implements Menu {
         }
         Pet pet = new Pet(name, species, age, owner);
         System.out.println("New Pet with ID "+pet.getPetId()+" created successfully!");
-        PetDAO dao = new PetDAO();
-        dao.insertPet(pet);
+        owner.getPets().add(pet);
+        pet_dao.insertPet(pet);
     }
     private static void createVeterinarians(){
         String name = readSafeString("Enter Veterinarian's name: ");
         String specialization = readSafeString("Enter Veterinarian's specialization: ");
         int experience = readSafeInt("Enter Veterinarian's experience: ");
+        if(experience == 67) System.out.println("67 67 67 ne smeshno");
         String phone = readSafeString("Enter Veterinarian's phone: ");
-        Veterinarian veterinarian = new Veterinarian(veterinarians.size() + 1, name, specialization, experience, phone);
-        veterinarians.add(veterinarian);
+        Veterinarian veterinarian = new Veterinarian(vets_fromDb.size() + 1, name, specialization, experience, phone);
+        vet_dao.insertVet(veterinarian);
+        //vets_fromDb.add(veterinarian);
         System.out.println("New Veterinarian created successfully!");
     }
     private static void createTreatments(){
         String ownerName = readSafeString("Enter Owner's name: ");
-        String veterinarianName = readSafeString("Enter Veterinarian's name: ");
-        String petName = readSafeString("Enter Pet's name: ");
+        String veterinarianName = null;
+        String petName = null;
+        veterinarianName = readSafeString("Enter Veterinarian's name: ");
+        petName = readSafeString("Enter Pet's name: ");
         String status = readSafeString("Enter treatment's status: ");
         String type = readSafeString("Enter treatment's type: ");
         Owner owner = null;
         Veterinarian veterinarian = null;
         Pet pet = null;
-        for(Owner o : owners){
+        for(Owner o : owners_fromDb){
             if(o.getName().equalsIgnoreCase(ownerName)){
                 owner = o;
                 break;
@@ -137,7 +148,7 @@ public class MenuManager implements Menu {
             System.out.println("Owner not found!");
             return;
         }
-        for(Veterinarian v : veterinarians){
+        for(Veterinarian v : vets_fromDb){
             if(v.getName().equalsIgnoreCase(veterinarianName)){
                 veterinarian = v;
                 break;
@@ -146,7 +157,7 @@ public class MenuManager implements Menu {
         if(veterinarian == null){
             System.out.println("Veterinarian not found!");
         }
-        for(Pet p : owner.getPets()){
+        for(Pet p : pets_fromDb){
             if(p.getName().equalsIgnoreCase(petName)){
                 pet = p;
                 break;
@@ -154,13 +165,19 @@ public class MenuManager implements Menu {
         }
         if(pet == null){
             System.out.println("Pet not found!");
+            return;
         }
+        if(!veterinarian.canTreat(pet)){
+            System.out.println("Veterinarian "+veterinarian.getName()+" can not treat "+pet.getSpecies()+" "+pet.getName()+"!");
+            return;
+        }//67 six seven hahahhaha
         Treatment treatment;
         if(type.equalsIgnoreCase("Vaccination")){
             System.out.println("Enter Vaccine name: \n");
             System.out.print(">>> ");
             String vaccineName = s.nextLine();
             treatment = new Vaccination(treatments.size()+1, owner, pet, veterinarian, status,  vaccineName);
+            treatment.completeTreatment();
             owner.addLoyaltyPoints(20);
         }else if(type.equalsIgnoreCase("Surgery")){
             System.out.println("Enter Surgery duration in hours: \n");
@@ -168,6 +185,7 @@ public class MenuManager implements Menu {
             int duration = s.nextInt();
             s.nextLine();
             treatment = new Surgery(treatments.size()+1, owner, pet, veterinarian, status,  duration);
+            treatment.completeTreatment();
             owner.addLoyaltyPoints(25);
         }else{
             System.out.println("Invalid input! You haven't written the type of a treatment!");
@@ -210,21 +228,33 @@ public class MenuManager implements Menu {
                     createOwner();
                     break;
                 case 2:
-                    OwnerDAO owner_dao = new OwnerDAO();
-                    for(Owner o : owners){
-                        owner_dao.selectAllOwners(o);
+//                    OwnerDAO owner_dao = new OwnerDAO();
+//                    ArrayList<Owner> owners_fromDb = owner_dao.selectAllOwners();
+                    if(owners_fromDb.isEmpty()){
+                        System.out.println("No owner found!");
+                    }else{
+                        for(Owner o : owners_fromDb){
+                            System.out.println(o);
+                            System.out.println();
+                        }
                     }
+//                    for(Owner o : owners){
+//                        owner_dao.selectAllOwners(o);
+//                    }
                     break;
                 case 3:
                     createPets();
                     break;
                 case 4:
-                    PetDAO pet_dao = new PetDAO();
-                    for(Owner o : owners){
-                        for(Pet p:o.getPets()){
-//                            System.out.println(p.toString());
-//                            System.out.println("\n");
-                            pet_dao.selectAllPets(p);
+//                    PetDAO pet_dao = new PetDAO();
+//                    owner_dao = new OwnerDAO();
+//                    owners_fromDb = owner_dao.selectAllOwners();
+                    if(pets_fromDb.isEmpty()){
+                        System.out.println("No pets found!");
+                    }else{
+                        for(Pet p : pets_fromDb){
+                            System.out.println(p);
+                            System.out.println();
                         }
                     }
                     break;
@@ -232,9 +262,13 @@ public class MenuManager implements Menu {
                     createVeterinarians();
                     break;
                 case 6:
-                    for(Veterinarian v : veterinarians){
-                        System.out.println(v.toString());
-                        System.out.println("\n");
+                    if(vets_fromDb.isEmpty()){
+                        System.out.println("No veterinarians found!");
+                    }else{
+                        for(Veterinarian v : vets_fromDb){
+                            System.out.println(v);
+                            System.out.println();
+                        }
                     }
                     break;
                 case 7:

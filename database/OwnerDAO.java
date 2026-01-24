@@ -5,6 +5,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 
 public class OwnerDAO {
     public void insertOwner(Owner owner) {
@@ -32,7 +33,8 @@ public class OwnerDAO {
         }
     }
 
-    public void selectAllOwners(Owner owner) {
+    public ArrayList<Owner> selectAllOwners() {
+        ArrayList<Owner> owners_list_dao = new ArrayList<>();
         String sql = "SELECT * FROM owner";
         Connection conn = DatabaseConnection.getConnection();
         try{
@@ -40,15 +42,23 @@ public class OwnerDAO {
             ResultSet rs = statement.executeQuery();
             System.out.println("====ALL OWNERS====");
             while (rs.next()) {
-                int  id = rs.getInt("owner_id");
-                String name = rs.getString("name");
-                String phone = rs.getString("phone");
+//                int  id = rs.getInt("owner_id");
+//                String name = rs.getString("name");
+//                String phone = rs.getString("phone");
+                Owner o = new Owner(
+                        rs.getInt("owner_id"),
+                        rs.getString("name"),
+                        rs.getString("phone")
+                        //rs.getInt("loyalty_points")
+                );
 
-                System.out.println("ID: " + id);
-                System.out.println("Name: " + name);
-                System.out.println("Phone: " + phone);
+                owners_list_dao.add(o);
 
-                System.out.println();
+//                System.out.println("ID: " + id);
+//                System.out.println("Name: " + name);
+//                System.out.println("Phone: " + phone);
+
+                //System.out.println();
             }
             rs.close();
             statement.close();
@@ -58,5 +68,6 @@ public class OwnerDAO {
         } finally {
             DatabaseConnection.closeConnection(conn);
         }
+        return owners_list_dao;
     }
 }

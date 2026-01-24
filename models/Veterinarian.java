@@ -16,8 +16,7 @@ public class Veterinarian{
     }
 
     public boolean canTreat(Pet pet){
-        if(specialization.equals(pet.getSpecies()))return true;
-        else return false;
+        return specialization.equalsIgnoreCase(pet.getSpecies());
     }
 
     public boolean isExperienced(){
