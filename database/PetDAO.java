@@ -4,7 +4,10 @@ import practice_1.models.Owner;
 import practice_1.models.Pet;
 import java.sql.*;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Locale;
+
+import static practice_1.database.OwnerDAO.getOwnerById;
 
 public class PetDAO {
     public void insertPet(Pet pet) {
@@ -62,5 +65,32 @@ public class PetDAO {
             DatabaseConnection.closeConnection(conn);
         }
         return pets_list_dao;
+    }
+    public List<Pet> searchPetsByName(String name) {
+        List<Pet> pets = new ArrayList<>();
+        String sql = "SELECT * FROM pet WHERE name ILIKE ? ORDER BY name";
+        Connection conn = DatabaseConnection.getConnection();
+        if(conn == null) return pets;
+        try{
+            PreparedStatement statement = conn.prepareStatement(sql);
+            statement.setString(1, "%"+name+"%");
+            ResultSet rs = statement.executeQuery();
+            while(rs.next()){
+                int owner_id = rs.getInt("owner_id");
+                Owner owner = getOwnerById(owner_id);
+                Pet pet = new Pet(rs.getString("name"), rs.getString("species"), rs.getInt("age"), owner);
+                if (pet != null){
+                    pets.add(pet);
+                }
+            }
+            rs.close();
+            statement.close();
+        }catch(SQLException e){
+            System.out.println("Error while searching pets by name");
+            e.printStackTrace();
+        }finally {
+            DatabaseConnection.closeConnection(conn);
+        }
+        return pets;
     }
 }

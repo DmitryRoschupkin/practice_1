@@ -1,8 +1,6 @@
 package practice_1.models;
 
 import java.util.ArrayList;
-import java.sql.Connection;
-import java.sql.DriverManager;
 
 public class Owner{
 		private int ownerId;

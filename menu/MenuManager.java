@@ -12,12 +12,12 @@ public class MenuManager implements Menu {
 //    private static ArrayList<Owner> owners = new ArrayList<Owner>();
     //private static ArrayList<Veterinarian> veterinarians = new ArrayList<Veterinarian>();
     private static ArrayList<Treatment> treatments = new ArrayList<>();
-    static OwnerDAO owner_dao = new OwnerDAO();
-    static PetDAO pet_dao = new PetDAO();
-    static VetDAO vet_dao = new VetDAO();
-    private static ArrayList<Owner> owners_fromDb = owner_dao.selectAllOwners();
-    private static ArrayList<Pet> pets_fromDb = pet_dao.selectAllPets();
-    private static ArrayList<Veterinarian> vets_fromDb = vet_dao.selectAllVets();
+    static OwnerDAO ownerDAO = new OwnerDAO();
+    static PetDAO petDAO = new PetDAO();
+    static VetDAO vetDAO = new VetDAO();
+    private static ArrayList<Owner> owners_fromDb = ownerDAO.selectAllOwners();
+    private static ArrayList<Pet> pets_fromDb = petDAO.selectAllPets();
+    private static ArrayList<Veterinarian> vets_fromDb = vetDAO.selectAllVets();
 
     private static Scanner s = new Scanner(System.in);
 
@@ -29,7 +29,7 @@ public class MenuManager implements Menu {
     }
 
     public static boolean isValid(int input){
-        return input > 0;
+        return input >= 0;
     }
 
     private static String readSafeString(String message) {
@@ -76,7 +76,14 @@ public class MenuManager implements Menu {
         System.out.println("6. View Veterinarians");
         System.out.println("7. Add Treatments");
         System.out.println("8. View Treatments");
-        System.out.println("9. Polymorphism demo");
+        System.out.println("9. Update owner");
+        System.out.println("10. Delete owner");
+        System.out.println("=======SEARCH AND FILTER=======");
+        System.out.println("11. Search Owner by name");
+        System.out.println("12. Search Owner by loyalty points range");
+        System.out.println("13. Most valuble owners (LP >= min)");
+        System.out.println("=======DEMO & OTHER=======");
+        System.out.println("14. Polymorphism demo");
         System.out.println("0. Exit");
         System.out.println("\n=====================================");
         System.out.println("Enter your choice:\n");
@@ -99,8 +106,8 @@ public class MenuManager implements Menu {
         int age = readSafeInt("Enter Pet's age: ");
         String ownerName = readSafeString("Enter Owner's name: ");
         Owner owner = null; // we have to find owner
-//        OwnerDAO owner_dao = new OwnerDAO();
-//        ArrayList<Owner> owners_fromDb = owner_dao.selectAllOwners();
+//        OwnerDAO ownerDAO = new OwnerDAO();
+//        ArrayList<Owner> owners_fromDb = ownerDAO.selectAllOwners();
         for(Owner o : owners_fromDb){
             if(o.getName().equalsIgnoreCase(ownerName)){
                 owner = o;
@@ -114,7 +121,7 @@ public class MenuManager implements Menu {
         Pet pet = new Pet(name, species, age, owner);
         System.out.println("New Pet with ID "+pet.getPetId()+" created successfully!");
         owner.getPets().add(pet);
-        pet_dao.insertPet(pet);
+        petDAO.insertPet(pet);
     }
     private static void createVeterinarians(){
         String name = readSafeString("Enter Veterinarian's name: ");
@@ -123,7 +130,7 @@ public class MenuManager implements Menu {
         if(experience == 67) System.out.println("67 67 67 ne smeshno");
         String phone = readSafeString("Enter Veterinarian's phone: ");
         Veterinarian veterinarian = new Veterinarian(vets_fromDb.size() + 1, name, specialization, experience, phone);
-        vet_dao.insertVet(veterinarian);
+        vetDAO.insertVet(veterinarian);
         //vets_fromDb.add(veterinarian);
         System.out.println("New Veterinarian created successfully!");
     }
@@ -211,6 +218,69 @@ public class MenuManager implements Menu {
             System.out.println("\n");
         }
     }
+    private static void updateOwner(){
+        System.out.println("Enter Owner's ID to update: ");
+        int  ownerId = s.nextInt();
+        s.nextLine();
+        Owner existingOwner = owners_fromDb.get(ownerId-1);
+        if(existingOwner == null){
+            System.out.println("Owner not found!");
+            return;
+        }
+        System.out.println("Current owner's info: "+existingOwner.toString());
+        System.out.println("New name: ["+existingOwner.getName()+"]");
+        System.out.println("Enter new name: ");
+        System.out.print(">>> ");
+        String newName = s.nextLine();
+        if(newName.trim().isEmpty()){
+            newName = existingOwner.getName();
+        }
+        System.out.println("New phone: ["+existingOwner.getPhone()+"]");
+        System.out.println("Enter new phone number: ");
+        System.out.print(">>> ");
+        String newPhone = s.nextLine();
+        if(newPhone.trim().isEmpty()){
+            newPhone = existingOwner.getPhone();
+        }
+        Owner updatedOwner = new Owner(ownerId, newName, newPhone);
+        ownerDAO.updateOwner(updatedOwner);
+    }
+    public static void deleteOwner(){
+        System.out.println("Enter Owner's ID to delete: ");
+        int  ownerId = s.nextInt();
+        s.nextLine();
+        Owner existingOwner = owners_fromDb.get(ownerId-1);
+        if(existingOwner == null){
+            System.out.println("Owner not found!");
+            return;
+        }
+        System.out.println("Current owner to delete: ");
+        System.out.println(existingOwner.toString());
+
+        System.out.println("Are you sure? (y/n)");
+        String answer = s.nextLine();
+        if(answer.equalsIgnoreCase("y")){
+            ownerDAO.deleteOwner(existingOwner);
+
+        }else{
+            System.out.println("Deletion canceled!");
+        }
+
+    }
+    public static void searchOwnerByName(){
+        String ownerName = readSafeString("Enter Owner name: ");
+        System.out.println(ownerDAO.searchOwnerByName(ownerName));
+    }
+    public static void searchOwnerByLoyaltyPoints(){
+        int minLoyaltyPoints = readSafeInt("Enter minimum loyalty points: ");
+        int maxLoyaltyPoints = readSafeInt("Enter maximum loyalty points: ");
+        System.out.println(ownerDAO.searchOwnerByLoyaltyPointsRange(minLoyaltyPoints, maxLoyaltyPoints));
+    }
+    public static void searchOwnerByMinLoyaltyPoints(){
+        int minLoyaltyPoints = readSafeInt("Enter loyalty points: ");
+        System.out.println(ownerDAO.searchOwnerByMinLoyaltyPoints(minLoyaltyPoints));
+    }
+
     public static void demonstratePolymorphism(){
         for(Treatment t : treatments){
             t.completeTreatment();
@@ -228,8 +298,6 @@ public class MenuManager implements Menu {
                     createOwner();
                     break;
                 case 2:
-//                    OwnerDAO owner_dao = new OwnerDAO();
-//                    ArrayList<Owner> owners_fromDb = owner_dao.selectAllOwners();
                     if(owners_fromDb.isEmpty()){
                         System.out.println("No owner found!");
                     }else{
@@ -238,17 +306,11 @@ public class MenuManager implements Menu {
                             System.out.println();
                         }
                     }
-//                    for(Owner o : owners){
-//                        owner_dao.selectAllOwners(o);
-//                    }
                     break;
                 case 3:
                     createPets();
                     break;
                 case 4:
-//                    PetDAO pet_dao = new PetDAO();
-//                    owner_dao = new OwnerDAO();
-//                    owners_fromDb = owner_dao.selectAllOwners();
                     if(pets_fromDb.isEmpty()){
                         System.out.println("No pets found!");
                     }else{
@@ -278,6 +340,21 @@ public class MenuManager implements Menu {
                     viewTreatments();
                     break;
                 case 9:
+                    updateOwner();
+                    break;
+                case 10:
+                    deleteOwner();
+                    break;
+                case 11:
+                    searchOwnerByName();
+                    break;
+                case 12:
+                    searchOwnerByLoyaltyPoints();
+                    break;
+                case 13:
+                    searchOwnerByMinLoyaltyPoints();
+                    break;
+                case 14:
                     demonstratePolymorphism();
                     break;
                 case 0:
