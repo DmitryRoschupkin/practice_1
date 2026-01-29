@@ -58,7 +58,7 @@ public class VetDAO {
         return vets_list_dao;
     }
     public boolean updateVet(Veterinarian v){
-        String sql = "UPDATE v SET name = ?, specialization = ?, experience = ?, phone = ? WHERE vet_id = ?";
+        String sql = "UPDATE veterinarian SET name = ?, specialization = ?, experience = ?, phone = ? WHERE vet_id = ?";
         Connection conn = DatabaseConnection.getConnection();
         try{
             PreparedStatement statement = conn.prepareStatement(sql);
@@ -81,7 +81,7 @@ public class VetDAO {
         return false;
     }
     public boolean deleteVet(Veterinarian v){
-        String sql = "DELETE FROM vet WHERE vet_id = ?";
+        String sql = "DELETE FROM veterinarian WHERE vet_id = ?";
         Connection conn = DatabaseConnection.getConnection();
         try{
             PreparedStatement statement = conn.prepareStatement(sql);
@@ -103,7 +103,7 @@ public class VetDAO {
     }
     public List<Veterinarian> searchVetByName(String name){
         List<Veterinarian> vets = new ArrayList<>();
-        String sql = "SELECT * FROM vet WHERE name ILIKE ? ORDER BY name";
+        String sql = "SELECT * FROM veterinarian WHERE name ILIKE ? ORDER BY name";
         Connection conn = DatabaseConnection.getConnection();
         if(conn == null) return vets;
         try{
@@ -128,7 +128,7 @@ public class VetDAO {
     }
     public List<Veterinarian> selectAllVetsByExp(int minExp, int  maxExp){
         List<Veterinarian> vets = new ArrayList<>();
-        String sql = "SELECT * FROM vet WHERE experience BETWEEN ? AND ?";
+        String sql = "SELECT * FROM veterinarian WHERE experience BETWEEN ? AND ?";
         Connection conn = DatabaseConnection.getConnection();
         if(conn == null) return vets;
         try{
@@ -155,7 +155,7 @@ public class VetDAO {
     }
     public List<Veterinarian> selectAllVetsByMinExp(int exp){
         List<Veterinarian> vets = new ArrayList<>();
-        String sql = "SELECT * FROM vet WHERE experience >= ?";
+        String sql = "SELECT * FROM veterinarian WHERE experience >= ?";
         Connection conn = DatabaseConnection.getConnection();
         if(conn == null) return vets;
         try{

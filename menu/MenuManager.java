@@ -77,13 +77,18 @@ public class MenuManager implements Menu {
         System.out.println("7. Add Treatments");
         System.out.println("8. View Treatments");
         System.out.println("9. Update owner");
-        System.out.println("10. Delete owner");
+        System.out.println("10. Update veterinarian");
+        System.out.println("11. Delete owner");
+        System.out.println("12. Delete veterinarian");
         System.out.println("=======SEARCH AND FILTER=======");
-        System.out.println("11. Search Owner by name");
-        System.out.println("12. Search Owner by loyalty points range");
-        System.out.println("13. Most valuble owners (LP >= min)");
+        System.out.println("13. Search Owner by name");
+        System.out.println("14. Search Veterinarian by name");
+        System.out.println("15. Search Owner by loyalty points range");
+        System.out.println("16. Search Veterinarian by experience range");
+        System.out.println("17. Most valuble owners (LP >= min)");
+        System.out.println("18. Most valuble veterinarians (EXP >= min)");
         System.out.println("=======DEMO & OTHER=======");
-        System.out.println("14. Polymorphism demo");
+        System.out.println("19. Polymorphism demo");
         System.out.println("0. Exit");
         System.out.println("\n=====================================");
         System.out.println("Enter your choice:\n");
@@ -280,6 +285,78 @@ public class MenuManager implements Menu {
         int minLoyaltyPoints = readSafeInt("Enter loyalty points: ");
         System.out.println(ownerDAO.searchOwnerByMinLoyaltyPoints(minLoyaltyPoints));
     }
+    public static void updateVet(){
+        System.out.println("Enter Vet's ID to update: ");
+        int vetId = s.nextInt();
+        s.nextLine();
+        Veterinarian existingVet = vets_fromDb.get(vetId-1);
+        if(existingVet == null){
+            System.out.println("Veterinarian not found!");
+            return;
+        }
+        System.out.println("Current vet's info: "+existingVet.toString());
+        System.out.println("New name: ["+existingVet.getName()+"]");
+        System.out.println("Enter new name: ");
+        System.out.print(">>> ");
+        String newName = s.nextLine();
+        if(newName.trim().isEmpty()){
+            newName = existingVet.getName();
+        }
+        System.out.println("New specialization: ["+existingVet.getSpecialization()+"]");
+        System.out.println("Enter new specialization: ");
+        System.out.print(">>> ");
+        String newSpecialization = s.nextLine();
+        if(newSpecialization.trim().isEmpty()){
+            newSpecialization = existingVet.getPhone();
+        }
+        System.out.println("New experience: ["+existingVet.getExperience()+"]");
+        int newExperience = readSafeInt("Enter experience: ");
+        System.out.println("New phone number: ["+existingVet.getPhone()+"]");
+        System.out.println("Enter new phone number: ");
+        System.out.print(">>> ");
+        String newPhone = s.nextLine();
+        if(newPhone.trim().isEmpty()){
+            newPhone = existingVet.getPhone();
+        }
+        Veterinarian updatedVet = new Veterinarian(vetId, newName, newSpecialization, newExperience, newPhone);
+        vetDAO.updateVet(updatedVet);
+    }
+    public static void deleteVet(){
+        System.out.println("Enter Vet's ID to delete: ");
+        int  vetId = s.nextInt();
+        s.nextLine();
+        Veterinarian existingVet = vets_fromDb.get(vetId-1);
+        if(existingVet == null){
+            System.out.println("Veterinatian not found!");
+            return;
+        }
+        System.out.println("Current vet to delete: ");
+        System.out.println(existingVet.toString());
+
+        System.out.println("Are you sure? (y/n)");
+        String answer = s.nextLine();
+        if(answer.equalsIgnoreCase("y")){
+            vetDAO.deleteVet(existingVet);
+
+        }else{
+            System.out.println("Deletion canceled!");
+        }
+
+    }
+    public static void searchVetsByName(){
+        String vetName = readSafeString("Enter Vet's name: ");
+        System.out.println(vetDAO.searchVetByName(vetName));
+    }
+    public static void selectAllVetsByExp(){
+        int minExp = readSafeInt("Enter minimum exp: ");
+        int maxExp = readSafeInt("Enter maximum exp: ");
+        System.out.println(vetDAO.selectAllVetsByExp(minExp, maxExp));
+    }
+    public static void selectAllVetsByMinExp(){
+        int minExp = readSafeInt("Enter minimum exp: ");
+        System.out.println(vetDAO.selectAllVetsByMinExp(minExp));
+    }
+
 
     public static void demonstratePolymorphism(){
         for(Treatment t : treatments){
@@ -343,18 +420,33 @@ public class MenuManager implements Menu {
                     updateOwner();
                     break;
                 case 10:
-                    deleteOwner();
+                    updateVet();
                     break;
                 case 11:
-                    searchOwnerByName();
+                    deleteOwner();
                     break;
                 case 12:
-                    searchOwnerByLoyaltyPoints();
+                    deleteVet();
                     break;
                 case 13:
-                    searchOwnerByMinLoyaltyPoints();
+                    searchOwnerByName();
                     break;
                 case 14:
+                    searchVetsByName();
+                    break;
+                case 15:
+                    searchOwnerByLoyaltyPoints();
+                    break;
+                case 16:
+                    selectAllVetsByExp();
+                    break;
+                case 17:
+                    searchOwnerByMinLoyaltyPoints();
+                    break;
+                case 18:
+                    selectAllVetsByMinExp();
+                    break;
+                case 19:
                     demonstratePolymorphism();
                     break;
                 case 0:
