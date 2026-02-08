@@ -87,8 +87,9 @@ public class MenuManager implements Menu {
         System.out.println("16. Search Veterinarian by experience range");
         System.out.println("17. Most valuble owners (LP >= min)");
         System.out.println("18. Most valuble veterinarians (EXP >= min)");
+        System.out.println("19. Search pets by species");
         System.out.println("=======DEMO & OTHER=======");
-        System.out.println("19. Polymorphism demo");
+        System.out.println("20. Polymorphism demo");
         System.out.println("0. Exit");
         System.out.println("\n=====================================");
         System.out.println("Enter your choice:\n");
@@ -356,6 +357,10 @@ public class MenuManager implements Menu {
         int minExp = readSafeInt("Enter minimum exp: ");
         System.out.println(vetDAO.selectAllVetsByMinExp(minExp));
     }
+    public static void selectPetsBySpecies(){
+        String species = readSafeString("Enter species: ");
+        System.out.println(petDAO.searchPetsBySpecies(species));
+    }
 
 
     public static void demonstratePolymorphism(){
@@ -447,6 +452,9 @@ public class MenuManager implements Menu {
                     selectAllVetsByMinExp();
                     break;
                 case 19:
+                    selectPetsBySpecies();
+                    break;
+                case 20:
                     demonstratePolymorphism();
                     break;
                 case 0:
